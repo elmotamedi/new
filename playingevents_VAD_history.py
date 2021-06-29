@@ -23,8 +23,10 @@ def groupby_user_id_sortby_timestamp(playing_events_VAD_df):
     sorted_playing_events_VAD_df = grouped_playing_events_VAD_df.apply(
         lambda x: x.sort_values(['timestamp'], ascending=False))
 
-    sorted_playing_events_VAD_df = sorted_playing_events_VAD_df.droplevel(
-        0).reset_index()  # reset multi_indexing
+    sorted_playing_events_VAD_df = sorted_playing_events_VAD_df.reset_index(
+        drop=True)
+    # sorted_playing_events_VAD_df = sorted_playing_events_VAD_df.droplevel(
+    #     level=0).reset_index()  # reset multi_indexing
     return sorted_playing_events_VAD_df
 
 
@@ -144,10 +146,14 @@ if __name__ == '__main__':
         sorted_playing_events_VAD_df, 'V_mean', 15, 'playing_events_short_history_V.csv')
     df_V.to_csv('playing_events_short_history_V_2.csv',
                 index=False, header=True)
+
+    #df_V = pd.read_csv('playing_events_short_history_V_2.csv', sep=',')
     df_V_l = generate_longterm_emotion_tags(
         df_V, 'V_mean', 24, 'playing_events_short_long_V.csv')
     df_V_l.to_csv('playing_events_short_long_V_2.csv',
                   index=False, header=True)
+
+    #df_V_l = pd.read_csv('playing_events_short_long_V.csv', sep=',')
 
     df_VA = generate_shortterm_emotion_tags(
         df_V_l, 'A_mean', 15, 'playing_events_short_long_V_short_A.csv')
